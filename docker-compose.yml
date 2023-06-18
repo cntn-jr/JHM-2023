@@ -11,8 +11,6 @@ services:
     restart: always
     depends_on:
       - front
-    volumes:
-      - ./nginx/vhost.d:/etc/nginx/vhost.d:ro
 
   front:
     container_name: front
