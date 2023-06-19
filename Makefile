@@ -32,8 +32,8 @@ mvdb:
 	docker-compose exec db sh
 
 f:
-	docker-compose exec front yarn prettier --write .
-	docker-compose exec api ./vendor/bin/php-cs-fixer fix -v --diff ./app
+	docker-compose exec front sh -c "cd jhm-2023-front && npm run format"
+	docker-compose exec api ./tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --diff ./app
 
 test:
 	docker-compose exec api php artisan config:clear
