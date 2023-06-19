@@ -6,6 +6,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "lint": "eslint .",
+    "prettier": "prettier --write --list-different .",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
