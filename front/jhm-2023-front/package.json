@@ -4,8 +4,9 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "format": "npm run prettier && npm run lint",
     "generate": "nuxt generate",
-    "lint": "eslint .",
+    "lint": "eslint --fix .",
     "prettier": "prettier --write --list-different .",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
