@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('attendance_number');
+            $table->integer('attendance_number')->nullable();
             $table->integer('role');
             $table->timestamps();
         });
