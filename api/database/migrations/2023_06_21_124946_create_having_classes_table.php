@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('having_classes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('school_class_id');
+            $table->unsignedBigInteger('teacher_id');
             $table->timestamps();
         });
     }
