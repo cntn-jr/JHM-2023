@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('activity_statuses', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->text('note');
             $table->timestamps();
         });
     }
