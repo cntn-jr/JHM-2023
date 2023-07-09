@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -60,7 +61,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 生徒の応募情報を取得
+     * 応募情報に関する中間テーブルの情報を取得
      *
      * @return HasMany
      */
@@ -72,11 +73,11 @@ class User extends Authenticatable
     /**
      * 生徒が応募した企業情報を取得
      *
-     * @return BelongsToMany
+     * @return HasManyThrough
      */
-    public function entryCompanies(): BelongsToMany
+    public function entryCompanies(): HasManyThrough
     {
-        return $this->belongsToMany(Company::class, 'entries', 'user_id', 'company_id');
+        return $this->hasManyThrough(Company::class, Entry::class, 'student_id', 'company_id');
     }
 
     /**

@@ -15,8 +15,13 @@ class Entry extends Model
      *
      * @return BelongsTo
      */
-    public function student(): BelongsTo
+    public function students(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'student_id', 'user_id');
+        return $this->belongsTo(User::class, 'student_id');
+    }
+
+    public function companies(): BelongsTo
+    {
+        return $this->belongsTo(Company::class);
     }
 }
