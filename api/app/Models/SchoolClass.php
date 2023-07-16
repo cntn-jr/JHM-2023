@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
@@ -24,13 +25,13 @@ class SchoolClass extends Model
     /**
      * 所属している生徒を取得
      *
-     * @return HasManyThrough
+     * @return BelongsToMany
      */
-    public function students(): HasManyThrough
+    public function students(): BelongsToMany
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             User::class,
-            EnrollmentClass::class,
+            'enrollment_classes',
             'school_class_id',
             'student_id'
         );

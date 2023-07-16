@@ -88,23 +88,23 @@ class User extends Authenticatable
     /**
      * 生徒と所属しているクラスの中間テーブルの情報を取得
      *
-     * @return HasOne
+     * @return HasMany
      */
-    public function enrollmentClass(): HasOne
+    public function enrollmentClass(): HasMany
     {
-        return $this->hasOne(EnrollmentClass::class, 'student_id');
+        return $this->hasMany(EnrollmentClass::class, 'student_id');
     }
 
     /**
-     * 所属しているクラスを取得
+     * 過去、現在、未来の所属するクラス一覧を取得
      *
-     * @return HasOneThrough
+     * @return BelongsToMany
      */
-    public function SchoolClass(): HasOneThrough
+    public function SchoolClass(): BelongsToMany
     {
-        return $this->hasOneThrough(
+        return $this->belongsToMany(
             SchoolClass::class,
-            EnrollmentClass::class,
+            'enrollment_classes',
             'student_id',
             'school_class_id'
         );
