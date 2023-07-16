@@ -36,4 +36,29 @@ class SchoolClass extends Model
             'student_id'
         );
     }
+
+    /**
+     * 教師と受け持つクラスの中間テーブルの情報を取得
+     *
+     * @return HasMany
+     */
+    public function havingClasses(): HasMany
+    {
+        return $this->hasMany(HavingClass::class, 'school_class_id');
+    }
+
+    /**
+     * クラスを受け持つ教師たちを取得
+     *
+     * @return BelongsToMany
+     */
+    public function teachers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'having_classes',
+            'school_class_id',
+            'teacher_id'
+        );
+    }
 }

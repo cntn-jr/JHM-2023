@@ -100,7 +100,7 @@ class User extends Authenticatable
      *
      * @return BelongsToMany
      */
-    public function SchoolClass(): BelongsToMany
+    public function enrollmentSchoolClass(): BelongsToMany
     {
         return $this->belongsToMany(
             SchoolClass::class,
@@ -122,6 +122,31 @@ class User extends Authenticatable
             Entry::class,
             'student_id',
             'entry_id'
+        );
+    }
+
+    /**
+     * 教師と受け持つクラスの中間テーブルの情報を取得
+     *
+     * @return HasMany
+     */
+    public function havingClasses(): HasMany
+    {
+        return $this->hasMany(HavingClass::class, 'teacher_id');
+    }
+
+    /**
+     * 教師が受け持つクラス一覧を取得
+     *
+     * @return BelongsToMany
+     */
+    public function havingSchoolClasses(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            SchoolClass::class,
+            'havingClasses',
+            'teacher_id',
+            'school_class_id'
         );
     }
 }
