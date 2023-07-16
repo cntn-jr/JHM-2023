@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Company extends Model
 {
@@ -25,10 +24,15 @@ class Company extends Model
     /**
      * 応募している生徒情報を取得
      *
-     * @return HasManyThrough
+     * @return BelongsToMany
      */
-    public function entryStudents(): HasManyThrough
+    public function entryStudents(): BelongsToMany
     {
-        return $this->hasManyThrough(User::class, Entry::class, 'company_id', 'student_id');
+        return $this->belongsToMany(
+            User::class,
+            'entries',
+            'company_id',
+            'student_id'
+        );
     }
 }

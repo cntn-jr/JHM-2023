@@ -73,11 +73,16 @@ class User extends Authenticatable
     /**
      * 生徒が応募した企業情報を取得
      *
-     * @return HasManyThrough
+     * @return BelongsToMany
      */
-    public function entryCompanies(): HasManyThrough
+    public function entryCompanies(): BelongsToMany
     {
-        return $this->hasManyThrough(Company::class, Entry::class, 'student_id', 'company_id');
+        return $this->belongsToMany(
+            Company::class,
+            'entries',
+            'student_id',
+            'company_id'
+        );
     }
 
     /**

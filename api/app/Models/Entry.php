@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Entry extends Model
 {
@@ -22,6 +21,11 @@ class Entry extends Model
         return $this->belongsTo(User::class, 'student_id');
     }
 
+    /**
+     * 応募されている企業情報を取得
+     *
+     * @return BelongsTo
+     */
     public function companies(): BelongsTo
     {
         return $this->belongsTo(Company::class);
