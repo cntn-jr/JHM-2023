@@ -104,4 +104,19 @@ class User extends Authenticatable
             'school_class_id'
         );
     }
+
+    /**
+     * 生徒の就職活動一覧を取得
+     *
+     * @return HasManyThrough
+     */
+    public function activityStatuses(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            ActivityStatus::class,
+            Entry::class,
+            'student_id',
+            'entry_id'
+        );
+    }
 }
