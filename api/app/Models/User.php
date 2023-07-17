@@ -4,6 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -44,4 +49,104 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * ユーザーが作成した企業情報の取得
+     *
+     * @return HasMany
+     */
+    public function companies(): HasMany
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    /**
+     * 応募情報に関する中間テーブルの情報を取得
+     *
+     * @return HasMany
+     */
+    public function entries(): HasMany
+    {
+        return $this->hasMany(Entry::class, 'student_id');
+    }
+
+    /**
+     * 生徒が応募した企業情報を取得
+     *
+     * @return BelongsToMany
+     */
+    public function entryCompanies(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Company::class,
+            'entries',
+            'student_id',
+            'company_id'
+        );
+    }
+
+    /**
+     * 生徒と所属しているクラスの中間テーブルの情報を取得
+     *
+     * @return HasMany
+     */
+    public function enrollmentClass(): HasMany
+    {
+        return $this->hasMany(EnrollmentClass::class, 'student_id');
+    }
+
+    /**
+     * 過去、現在、未来の所属するクラス一覧を取得
+     *
+     * @return BelongsToMany
+     */
+    public function enrollmentSchoolClass(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            SchoolClass::class,
+            'enrollment_classes',
+            'student_id',
+            'school_class_id'
+        );
+    }
+
+    /**
+     * 生徒の就職活動一覧を取得
+     *
+     * @return HasManyThrough
+     */
+    public function activityStatuses(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            ActivityStatus::class,
+            Entry::class,
+            'student_id',
+            'entry_id'
+        );
+    }
+
+    /**
+     * 教師と受け持つクラスの中間テーブルの情報を取得
+     *
+     * @return HasMany
+     */
+    public function havingClasses(): HasMany
+    {
+        return $this->hasMany(HavingClass::class, 'teacher_id');
+    }
+
+    /**
+     * 教師が受け持つクラス一覧を取得
+     *
+     * @return BelongsToMany
+     */
+    public function havingSchoolClasses(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            SchoolClass::class,
+            'havingClasses',
+            'teacher_id',
+            'school_class_id'
+        );
+    }
 }

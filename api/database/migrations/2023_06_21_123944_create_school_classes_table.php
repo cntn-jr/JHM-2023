@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('school_classes', function (Blueprint $table) {
             $table->id();
-            $table->string('course');
-            $table->integer('grade');
+            $table->string('course'); // 学科
+            $table->unsignedTinyInteger('grade'); // 学年
+            $table->unsignedTinyInteger('fiscal_year'); //年度
             $table->timestamps();
         });
     }
