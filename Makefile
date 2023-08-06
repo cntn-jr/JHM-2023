@@ -2,6 +2,9 @@ up:
 	docker-compose up -d
 	docker-compose exec front sh -c "cd jhm-2023-front && npm run dev"
 
+upApi:
+	docker-compose up -d
+
 init:
 	docker-compose up --build -d
 	docker compose exec api composer create-project --prefer-dist laravel/laravel . "10.*"
