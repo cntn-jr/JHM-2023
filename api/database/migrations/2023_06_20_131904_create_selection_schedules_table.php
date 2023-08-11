@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->dateTime('schedule_date');
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
         });
     }
