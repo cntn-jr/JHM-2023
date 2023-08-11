@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EnrollmentClassController;
+use App\Http\Controllers\EntryController;
 use App\Http\Controllers\HavingClassController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SchoolClassController;
@@ -113,6 +114,12 @@ Route::prefix('teacher')->group(function () {
                 Route::put('/{id}', [CompanyController::class, 'update']);
                 Route::delete('/{id}', [CompanyController::class, 'destroy']);
             });
+        });
+        // 応募情報管理
+        Route::prefix('entry')->group(function () {
+            Route::post('/', [EntryController::class, 'store']);
+            Route::post('/{id}', [EntryController::class, 'update']);
+            Route::delete('/{id}', [EntryController::class, 'delete']);
         });
     });
 });
