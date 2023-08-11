@@ -116,3 +116,28 @@ Route::prefix('teacher')->group(function () {
         });
     });
 });
+
+Route::prefix('student')->group(function () {
+    // ログイン
+    Route::get('login/google', [AuthenticateController::class, 'getOAuthUrl']);
+    Route::post('login/google/callback', [AuthenticateController::class, 'handleGoogleCallback']);
+    Route::middleware(['auth:sanctum'])->group(function () {
+        // ホーム
+        Route::get('/', [HomeController::class, 'index']);
+        // 企業情報管理
+        Route::prefix('company')->group(function () {
+            Route::get('/', [CompanyController::class, 'index']);
+            Route::post('/', [CompanyController::class, 'store']);
+            Route::get('/{id}', [CompanyController::class, 'show']);
+            Route::put('/{id}', [CompanyController::class, 'update']);
+            Route::delete('/{id}', [CompanyController::class, 'destroy']);
+        });
+        // 選考スケジュール管理
+        Route::prefix('schedule')->group(function () {
+            Route::get('/', [CompanyController::class, 'index']);
+            Route::post('/', [CompanyController::class, 'store']);
+            Route::put('/{id}', [CompanyController::class, 'update']);
+            Route::delete('/{id}', [CompanyController::class, 'destroy']);
+        });
+    });
+});
