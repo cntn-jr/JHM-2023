@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('selection_schedules', function (Blueprint $table) {
+        Schema::create('company_pdfs', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('content');
-            $table->dateTime('schedule_date');
-            $table->unsignedBigInteger('company_id');
+            $table->string('name');
+            $table->binary('content')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('selection_schedules');
+        Schema::dropIfExists('company_pdfs');
     }
 };
