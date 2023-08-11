@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthenticateController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EnrollmentClassController;
 use App\Http\Controllers\HavingClassController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +68,50 @@ Route::prefix('manager')->group(function () {
                 Route::post('/finalize', [HavingClassController::class, 'finalize']);
                 Route::put('/{id}', [HavingClassController::class, 'update']);
                 Route::delete('/{id}', [HavingClassController::class, 'destroy']);
+            });
+        });
+    });
+});
+
+// 教師
+Route::prefix('teacher')->group(function () {
+    // ログイン
+    Route::get('login/google', [AuthenticateController::class, 'getOAuthUrl']);
+    Route::post('login/google/callback', [AuthenticateController::class, 'handleGoogleCallback']);
+    Route::middleware(['auth:sanctum'])->group(function () {
+        // ホーム
+        Route::get('/', [HomeController::class, 'index']);
+        // 生徒情報管理
+        Route::prefix('student')->group(function () {
+            Route::get('/', [StudentController::class, 'index']);
+            Route::post('/', [StudentController::class, 'store']);
+            Route::post('/finalize', [StudentController::class, 'finalize']);
+            Route::get('/{id}', [StudentController::class, 'show']);
+            Route::put('/{id}', [StudentController::class, 'update']);
+            Route::delete('/{id}', [StudentController::class, 'destroy']);
+        });
+        // クラスや在籍生徒情報管理
+        Route::prefix('class')->group(function () {
+            Route::get('/{id}', [SchoolClassController::class, 'show']);
+            Route::prefix('enroll')->group(function () {
+                Route::post('/', [EnrollmentClassController::class, 'store']);
+                Route::post('/finalize', [EnrollmentClassController::class, 'finalize']);
+                Route::put('/', [EnrollmentClassController::class, 'update']);
+            });
+        });
+        // 企業情報管理
+        Route::prefix('company')->group(function () {
+            Route::get('/', [CompanyController::class, 'index']);
+            Route::post('/', [CompanyController::class, 'store']);
+            Route::get('/{id}', [CompanyController::class, 'show']);
+            Route::put('/{id}', [CompanyController::class, 'update']);
+            Route::delete('/{id}', [CompanyController::class, 'destroy']);
+            // 選考スケジュール管理
+            Route::prefix('schedule')->group(function () {
+                Route::get('/', [CompanyController::class, 'index']);
+                Route::post('/', [CompanyController::class, 'store']);
+                Route::put('/{id}', [CompanyController::class, 'update']);
+                Route::delete('/{id}', [CompanyController::class, 'destroy']);
             });
         });
     });
