@@ -115,12 +115,6 @@ Route::prefix('teacher')->group(function () {
                 Route::delete('/{id}', [CompanyController::class, 'destroy']);
             });
         });
-        // 応募情報管理
-        Route::prefix('entry')->group(function () {
-            Route::post('/', [EntryController::class, 'store']);
-            Route::post('/{id}', [EntryController::class, 'update']);
-            Route::delete('/{id}', [EntryController::class, 'delete']);
-        });
     });
 });
 
@@ -138,13 +132,19 @@ Route::prefix('student')->group(function () {
             Route::get('/{id}', [CompanyController::class, 'show']);
             Route::put('/{id}', [CompanyController::class, 'update']);
             Route::delete('/{id}', [CompanyController::class, 'destroy']);
+            // 選考スケジュール管理
+            Route::prefix('schedule')->group(function () {
+                Route::get('/', [CompanyController::class, 'index']);
+                Route::post('/', [CompanyController::class, 'store']);
+                Route::put('/{id}', [CompanyController::class, 'update']);
+                Route::delete('/{id}', [CompanyController::class, 'destroy']);
+            });
         });
-        // 選考スケジュール管理
-        Route::prefix('schedule')->group(function () {
-            Route::get('/', [CompanyController::class, 'index']);
-            Route::post('/', [CompanyController::class, 'store']);
-            Route::put('/{id}', [CompanyController::class, 'update']);
-            Route::delete('/{id}', [CompanyController::class, 'destroy']);
+        // 応募情報管理
+        Route::prefix('entry')->group(function () {
+            Route::post('/', [EntryController::class, 'store']);
+            Route::post('/{id}', [EntryController::class, 'update']);
+            Route::delete('/{id}', [EntryController::class, 'delete']);
         });
     });
 });
