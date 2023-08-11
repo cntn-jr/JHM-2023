@@ -8,6 +8,7 @@ use App\Http\Controllers\HavingClassController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\SelectionScheduleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Http\Request;
@@ -109,10 +110,10 @@ Route::prefix('teacher')->group(function () {
             Route::delete('/{id}', [CompanyController::class, 'destroy']);
             // 選考スケジュール管理
             Route::prefix('schedule')->group(function () {
-                Route::get('/', [CompanyController::class, 'index']);
-                Route::post('/', [CompanyController::class, 'store']);
-                Route::put('/{id}', [CompanyController::class, 'update']);
-                Route::delete('/{id}', [CompanyController::class, 'destroy']);
+                Route::get('/', [SelectionScheduleController::class, 'index']);
+                Route::post('/', [SelectionScheduleController::class, 'store']);
+                Route::put('/{id}', [SelectionScheduleController::class, 'update']);
+                Route::delete('/{id}', [SelectionScheduleController::class, 'destroy']);
             });
         });
     });
@@ -134,10 +135,10 @@ Route::prefix('student')->group(function () {
             Route::delete('/{id}', [CompanyController::class, 'destroy']);
             // 選考スケジュール管理
             Route::prefix('schedule')->group(function () {
-                Route::get('/', [CompanyController::class, 'index']);
-                Route::post('/', [CompanyController::class, 'store']);
-                Route::put('/{id}', [CompanyController::class, 'update']);
-                Route::delete('/{id}', [CompanyController::class, 'destroy']);
+                Route::get('/', [SelectionScheduleController::class, 'index']);
+                Route::post('/', [SelectionScheduleController::class, 'store']);
+                Route::put('/{id}', [SelectionScheduleController::class, 'update']);
+                Route::delete('/{id}', [SelectionScheduleController::class, 'destroy']);
             });
         });
         // 応募情報管理
