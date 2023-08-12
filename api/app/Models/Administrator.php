@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Administrator extends User
 {
     use HasFactory;
+
+    protected $table = 'users';
 }
