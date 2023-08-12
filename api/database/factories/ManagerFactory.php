@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\School;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
+use Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -16,8 +19,12 @@ class ManagerFactory extends Factory
      */
     public function definition(): array
     {
+        $schools = School::all(['id']);
         return [
-            //
+            'email' => fake()->userName() . '@manager.kawahara.ac.jp',
+            'password' => Hash::make('password'),
+            'role' => Role::MANAGER,
+            'school_id' => fake()->randomElement($schools)->id,
         ];
     }
 }
