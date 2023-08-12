@@ -16,8 +16,13 @@ class SchoolFactory extends Factory
      */
     public function definition(): array
     {
+        $schoolNames = [
+            fake()->lastName() . 'コンピューター専門学校',
+            fake()->prefecture() . '大学',
+            fake()->ward() . '大学',
+        ];
         return [
-            //
+            'name' => fake()->randomElement($schoolNames),
         ];
     }
 }
