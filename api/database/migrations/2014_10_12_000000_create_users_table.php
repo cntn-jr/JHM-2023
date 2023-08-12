@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->integer('attendance_number')->nullable();
             $table->integer('role');
-            $table->unsignedBigInteger('school_id');
+            $table->unsignedBigInteger('school_id')->nullable();
             $table->timestamps();
         });
     }
