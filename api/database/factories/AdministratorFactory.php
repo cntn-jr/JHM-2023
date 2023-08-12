@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Const\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Administrator>
