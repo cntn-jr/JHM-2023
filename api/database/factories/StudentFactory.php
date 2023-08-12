@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Role;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Student>
  */
 class StudentFactory extends Factory
 {
