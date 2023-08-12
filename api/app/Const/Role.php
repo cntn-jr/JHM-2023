@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Const;
+
 class Role {
     public const ADMINISTRATOR = 1;
     public const MANAGER = 2;
