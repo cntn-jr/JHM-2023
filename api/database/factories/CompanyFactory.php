@@ -19,10 +19,10 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         $users = User::query()
-            ->whereIn([Role::STUDENT, Role::TEACHER])
+            ->whereIn('role', [Role::STUDENT, Role::TEACHER])
             ->get(['id']);
         return [
-            'name' => fake()->companyPrefix(),
+            'name' => fake()->company(),
             'homepage_url' => 'https://google.com',
             'job_hunting_app_url' => 'https://www.wantedly.com/projects',
             'user_id' => fake()->randomElement($users)->id,
