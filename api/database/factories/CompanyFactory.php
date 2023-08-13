@@ -18,16 +18,40 @@ class CompanyFactory extends Factory
      */
     public function definition(): array
     {
-        $users = User::query()
-            ->whereIn('role', [Role::STUDENT, Role::TEACHER])
-            ->get(['id']);
         return [
             'name' => fake()->company(),
             'homepage_url' => 'https://google.com',
             'job_hunting_app_url' => 'https://www.wantedly.com/projects',
-            'user_id' => fake()->randomElement($users)->id,
             'head_office_location' => fake()->prefecture(),
             'note' => fake()->emoji(),
         ];
+    }
+
+    /**
+     * 作成者に教師を指定
+     *
+     * @return void
+     */
+    public function teacher() {
+        $teachers = User::query()
+            ->where('role', Role::TEACHER)
+            ->get(['id']);
+        return $this->state(fn (array $attributes) =>
+            [ 'user_id' =>fake()->randomElement($teachers)->id, ]
+        );
+    }
+
+    /**
+     * 作成者に生徒を指定
+     *
+     * @return void
+     */
+    public function student() {
+        $students = User::query()
+            ->where('role', Role::STUDENT)
+            ->get(['id']);
+        return $this->state(fn (array $attributes) =>
+            [ 'user_id' =>fake()->randomElement($students)->id, ]
+        );
     }
 }
