@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Company;
 use App\Models\Manager;
 use App\Models\School;
 use App\Models\Student;
@@ -25,12 +26,24 @@ class SchoolSeeder extends Seeder
             )
             ->has(
                 Teacher::factory(10)
+                    ->has(
+                        Company::factory(5)
+                            ->state(function (array $attributes, Teacher $teacher) {
+                                return [ 'user_id' => $teacher->id, ];
+                            })
+                    )
                     ->state(function (array $attributes, School $school) {
                         return [ 'school_id' => $school->id, ];
                     })
             )
             ->has(
                 Student::factory(30)
+                    ->has(
+                        Company::factory(3)
+                            ->state(function (array $attributes, Student $student) {
+                                return [ 'user_id' => $student->id, ];
+                            })
+                    )
                     ->state(function (array $attributes, School $school) {
                         return [ 'school_id' => $school->id, ];
                     })
