@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Department;
 use App\Models\Manager;
 use App\Models\School;
 use App\Models\Student;
@@ -33,6 +34,12 @@ class SchoolSeeder extends Seeder
                 Student::factory(30)
                     ->state(function (array $attributes, School $school) {
                         return [ 'school_id' => $school->id, ];
+                    })
+            )
+            ->has(
+                Department::factory(15)
+                    ->state(function (array $attributes, School $school) {
+                        return [ 'school_id' => $school->id ];
                     })
             )
             ->create();
