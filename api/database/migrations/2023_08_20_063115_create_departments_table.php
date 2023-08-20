@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
+            $table->string('course')->comment('学科名');
+            $table->unsignedTinyInteger('grade')->comment('学年');
+            $table->unsignedTinyInteger('fiscal_year')->comment('稼働年度');
             $table->timestamps();
+            $table->comment('学科');
         });
     }
 
