@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('course')->comment('学科名');
             $table->unsignedTinyInteger('grade')->comment('学年');
             $table->unsignedTinyInteger('fiscal_year')->comment('稼働年度');
+            $table->unsignedBigInteger('school_id')->comment('学校ID');
             $table->timestamps();
             $table->comment('学科');
         });
