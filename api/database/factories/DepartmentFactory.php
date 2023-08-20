@@ -16,7 +16,7 @@ class DepartmentFactory extends Factory
      */
     public function definition(): array
     {
-        $currentYear = now()->year();
+        $currentYear = date('Y');
         $fiscalYear = $currentYear + fake()->numberBetween(-1, 1);
         $courseNames = [
             '工学部情報学科',
