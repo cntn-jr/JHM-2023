@@ -6,8 +6,7 @@ use App\Http\Controllers\EnrollmentClassController;
 use App\Http\Controllers\EntryController;
 use App\Http\Controllers\HavingClassController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SchoolClassController;
-use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SelectionScheduleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -59,11 +58,11 @@ Route::prefix('manager')->group(function () {
         });
         // クラス情報の管理
         Route::prefix('class')->group(function () {
-            Route::get('/', [SchoolClassController::class, 'index']);
-            Route::post('/', [SchoolClassController::class, 'store']);
-            Route::post('/finalize', [SchoolClassController::class, 'finalize']);
-            Route::put('/{id}', [SchoolClassController::class, 'update']);
-            Route::delete('/{id}', [SchoolClassController::class, 'destroy']);
+            Route::get('/', [DepartmentController::class, 'index']);
+            Route::post('/', [DepartmentController::class, 'store']);
+            Route::post('/finalize', [DepartmentController::class, 'finalize']);
+            Route::put('/{id}', [DepartmentController::class, 'update']);
+            Route::delete('/{id}', [DepartmentController::class, 'destroy']);
             // クラス担任の管理
             Route::prefix('assign')->group(function () {
                 Route::post('/', [HavingClassController::class, 'store']);
@@ -94,7 +93,7 @@ Route::prefix('teacher')->group(function () {
         });
         // クラスや在籍生徒情報管理
         Route::prefix('class')->group(function () {
-            Route::get('/{id}', [SchoolClassController::class, 'show']);
+            Route::get('/{id}', [DepartmentController::class, 'show']);
             Route::prefix('enroll')->group(function () {
                 Route::post('/', [EnrollmentClassController::class, 'store']);
                 Route::post('/finalize', [EnrollmentClassController::class, 'finalize']);
