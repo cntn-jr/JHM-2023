@@ -36,4 +36,9 @@ class School extends Model
             'user_id',
         );
     }
+
+    public function departments(): HasMany
+    {
+        return $this->hasMany(Department::class);
+    }
 }

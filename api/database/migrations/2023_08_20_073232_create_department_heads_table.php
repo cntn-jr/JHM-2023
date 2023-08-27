@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('school_classes', function (Blueprint $table) {
+        Schema::create('department_heads', function (Blueprint $table) {
             $table->id();
-            $table->string('course'); // 学科
-            $table->unsignedTinyInteger('grade'); // 学年
-            $table->unsignedTinyInteger('fiscal_year'); //年度
+            $table->unsignedBigInteger('department_id')->comment('対象学科ID');
+            $table->unsignedBigInteger('teacher_id')->comment('学科を受け持つ教師ID');
             $table->timestamps();
+            $table->comment('学科やクラスを受け持つ教師');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('school_classes');
+        Schema::dropIfExists('department_heads');
     }
 };
