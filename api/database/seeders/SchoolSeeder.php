@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Department;
 use App\Models\DepartmentHead;
+use App\Models\EnrollmentClass;
 use App\Models\Manager;
 use App\Models\School;
 use App\Models\Student;
@@ -32,18 +33,17 @@ class SchoolSeeder extends Seeder
                     })
             )
             ->has(
-                Student::factory(30)
+                Department::factory(15)
+                    ->has(DepartmentHead::factory()->createByDepartment())
                     ->state(function (array $attributes, School $school) {
-                        return [ 'school_id' => $school->id, ];
+                        return [ 'school_id' => $school->id ];
                     })
             )
             ->has(
-                Department::factory(15)
-                    ->has(
-                        DepartmentHead::factory()->createByDepartment()
-                    )
+                Student::factory(300)
+                    ->has(EnrollmentClass::factory()->createByStudent())
                     ->state(function (array $attributes, School $school) {
-                        return [ 'school_id' => $school->id ];
+                        return [ 'school_id' => $school->id, ];
                     })
             )
             ->create();

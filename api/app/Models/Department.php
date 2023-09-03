@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,5 +20,15 @@ class Department extends Model
     public function departmentHeads() :HasMany
     {
         return $this->hasMany(DepartmentHead::class);
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
+    }
+
+    public function scopeSchool(Builder $query, int $school_id) :void
+    {
+        $query->where('school_id', $school_id);
     }
 }

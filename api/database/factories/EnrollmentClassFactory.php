@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Student;
+use App\Repositories\DepartmentRepository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,5 +21,18 @@ class EnrollmentClassFactory extends Factory
         return [
             //
         ];
+    }
+
+    public function createByStudent(): Factory
+    {
+        return $this->state(function (array $attributes, Student $student) {
+            $school_id = $student->school_id;
+            $departmentRepository = new DepartmentRepository();
+            $departments = $departmentRepository->findScopedSchool($school_id);
+            return [
+                'department_id' => fake()->randomElement($departments)->id,
+                'student_id'    => $student->id,
+            ];
+        });
     }
 }

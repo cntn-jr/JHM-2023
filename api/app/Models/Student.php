@@ -21,4 +21,9 @@ class Student extends User
     {
         return $this->hasMany(Company::class, 'user_id');
     }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Student::class);
+    }
 }
