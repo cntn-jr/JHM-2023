@@ -8,8 +8,7 @@ class TeacherRepository {
     public function findAllScopedSchool(int $school_id)
     {
         return Teacher::query()
-            ->role()
-            ->where('school_id', $school_id)
+            ->school($school_id)
             ->get();
     }
 }
