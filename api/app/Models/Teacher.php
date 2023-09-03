@@ -41,6 +41,13 @@ class Teacher extends User
         return $this->hasMany(Company::class, 'user_id');
     }
 
+    /**
+     * 指定した学校で絞り込む
+     *
+     * @param Builder $query
+     * @param integer $school_id
+     * @return void
+     */
     public function scopeSchool(Builder $query, int $school_id): void
     {
         $query->where('school_id', $school_id);

@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use App\Const\Role;
 use App\Models\User;
+use App\Repositories\StudentRepository;
+use App\Repositories\TeacherRepository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,12 +32,12 @@ class CompanyFactory extends Factory
     /**
      * 作成者に教師を指定
      *
-     * @return void
+     * @return Factory
      */
-    public function teacher() {
-        $teachers = User::query()
-            ->where('role', Role::TEACHER)
-            ->get(['id']);
+    public function teacher() :Factory
+    {
+        $teacherRepository = new TeacherRepository();
+        $teachers = $teacherRepository->findAll();
         return $this->state(fn (array $attributes) =>
             [ 'user_id' =>fake()->randomElement($teachers)->id, ]
         );
@@ -44,12 +46,12 @@ class CompanyFactory extends Factory
     /**
      * 作成者に生徒を指定
      *
-     * @return void
+     * @return Factory
      */
-    public function student() {
-        $students = User::query()
-            ->where('role', Role::STUDENT)
-            ->get(['id']);
+    public function student() :Factory
+    {
+        $studentRepository = new StudentRepository();
+        $students = $studentRepository->findAll();
         return $this->state(fn (array $attributes) =>
             [ 'user_id' =>fake()->randomElement($students)->id, ]
         );
