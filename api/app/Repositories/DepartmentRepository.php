@@ -4,6 +4,7 @@ namespace App\Repositories;
 use App\Models\Department;
 
 class DepartmentRepository {
+
     /**
      * 指定した学校の学科を取得する
      *

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Const\Role;
 use App\Models\School;
+use App\Repositories\SchoolRepository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,7 +20,8 @@ class TeacherFactory extends Factory
      */
     public function definition(): array
     {
-        $schools = School::all(['id']);
+        $schoolRepository = new SchoolRepository();
+        $schools = $schoolRepository->findAll();
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
