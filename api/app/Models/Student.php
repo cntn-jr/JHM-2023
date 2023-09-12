@@ -45,4 +45,9 @@ class Student extends User
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function scopeSchool(Builder $query, int $school_id): void
+    {
+        $query->where('school_id', $school_id);
+    }
 }

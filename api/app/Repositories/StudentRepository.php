@@ -16,4 +16,11 @@ use Illuminate\Database\Eloquent\Collection;
         {
             return Student::all();
         }
+
+        public function findScopedSchool(int $school_id): Collection
+        {
+            return Student::query()
+                ->school($school_id)
+                ->get();
+        }
     }
