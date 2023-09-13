@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -34,5 +35,17 @@ class Company extends Model
             'company_id',
             'student_id'
         );
+    }
+
+    /**
+     * 指定した学校で絞り込む
+     *
+     * @param Builder $query
+     * @param integer $school_id
+     * @return void
+     */
+    public function scopeSchool(Builder $query, int $school_id): void
+    {
+        $query->where('school_id', $school_id);
     }
 }
