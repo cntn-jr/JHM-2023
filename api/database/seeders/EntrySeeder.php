@@ -36,7 +36,7 @@ class EntrySeeder extends Seeder
                     Entry::factory()->create([
                         'student_id' => $student->id,
                         'company_id' => $company->id,
-                        'result'     => fake()->randomElement(EntryResult::ALL)['id'],
+                        'result'     => fake()->randomElement(EntryResult::ALL),
                     ]);
                 }
             }
