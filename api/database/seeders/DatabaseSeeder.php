@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             SchoolSeeder::class,
             CompanySeeder::class,
             EntrySeeder::class,
+            ActivityStatusSeeder::class,
         ]);
     }
 }
