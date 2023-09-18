@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             EntrySeeder::class,
             ActivityStatusSeeder::class,
+            SelectionScheduleSeeder::class,
         ]);
     }
 }

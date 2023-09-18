@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Collection;
 class CompanyRepository {
 
     /**
+     * 全ての会社情報を取得する
+     *
+     * @return Collection
+     */
+    public function findAll(): Collection
+    {
+        return Company::all();
+    }
+
+    /**
      * 指定した学校で登録された企業を取得
      *
      * @param integer $school_id
