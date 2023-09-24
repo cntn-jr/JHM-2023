@@ -17,7 +17,7 @@ class SelectionScheduleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'schedule_date' => fake()->dateTimeBetween('2023-02-01', '2023-10-31'),
         ];
     }
 }

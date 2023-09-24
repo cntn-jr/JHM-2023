@@ -2,30 +2,30 @@
 
 namespace App\Repositories;
 
-use App\Models\Teacher;
+use App\Models\Company;
 use Illuminate\Database\Eloquent\Collection;
 
-class TeacherRepository {
+class CompanyRepository {
 
     /**
-     * 教師の全情報を取得する
+     * 全ての会社情報を取得する
      *
      * @return Collection
      */
-    public function findAll() :Collection
+    public function findAll(): Collection
     {
-        return Teacher::all();
+        return Company::all();
     }
 
     /**
-     * 指定した学校の教師情報を取得する
+     * 指定した学校で登録された企業を取得
      *
      * @param integer $school_id
-     * @return Collection
+     * @return void
      */
     public function findScopedSchool(int $school_id) :Collection
     {
-        return Teacher::query()
+        return Company::query()
             ->school($school_id)
             ->get();
     }

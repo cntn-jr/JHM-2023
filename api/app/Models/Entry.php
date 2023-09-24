@@ -36,7 +36,7 @@ class Entry extends Model
      *
      * @return HasMany
      */
-    public function activeStatuses(): HasMany
+    public function activityStatuses(): HasMany
     {
         return $this->hasMany(ActivityStatus::class);
     }

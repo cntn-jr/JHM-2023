@@ -33,7 +33,7 @@ class DepartmentHeadFactory extends Factory
         return $this->state(function (array $attributes, Department $department) {
             $teacherRepository = new TeacherRepository();
             $school_id = $department->school_id;
-            $teachers = $teacherRepository->findAllScopedSchool($school_id);
+            $teachers = $teacherRepository->findScopedSchool($school_id);
             return [
                 'department_id' => $department->id,
                 'teacher_id' => fake()->randomElement($teachers)->id,

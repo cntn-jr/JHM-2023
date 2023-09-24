@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('entry_id');
             $table->unsignedTinyInteger('status_number');
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

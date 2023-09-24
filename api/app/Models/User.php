@@ -126,16 +126,6 @@ class User extends Authenticatable
     }
 
     /**
-     * 教師と受け持つクラスの中間テーブルの情報を取得
-     *
-     * @return HasMany
-     */
-    public function havingClasses(): HasMany
-    {
-        return $this->hasMany(HavingClass::class, 'teacher_id');
-    }
-
-    /**
      * 教師が受け持つクラス一覧を取得
      *
      * @return BelongsToMany
