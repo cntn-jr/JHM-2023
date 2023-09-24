@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('selection_schedules', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('content');
+            $table->text('content')->nullable();
             $table->dateTime('schedule_date');
             $table->unsignedBigInteger('company_id');
             $table->timestamps();

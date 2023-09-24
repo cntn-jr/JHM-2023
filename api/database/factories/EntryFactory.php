@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Repositories\StudentRepository;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,5 +20,18 @@ class EntryFactory extends Factory
         return [
             //
         ];
+    }
+
+    public function createBySchool(int $schoolId): Factory
+    {
+        $studentRepository = new StudentRepository();
+        $students = $studentRepository->findScopedSchool($schoolId);
+        if (fake()->boolean(80)) {
+            return $this->state(function () use ($students) {
+                $entryNum = fake()->numberBetween(1, 8);
+                $students = fake()->randomElements($students, $entryNum);
+                return [];
+            });
+        }
     }
 }

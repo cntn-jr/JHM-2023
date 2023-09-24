@@ -23,6 +23,11 @@ class EnrollmentClassFactory extends Factory
         ];
     }
 
+    /**
+     * 生徒情報から生徒在籍情報を作成する
+     *
+     * @return Factory
+     */
     public function createByStudent(): Factory
     {
         return $this->state(function (array $attributes, Student $student) {
