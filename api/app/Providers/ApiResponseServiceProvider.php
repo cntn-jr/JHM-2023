@@ -41,7 +41,7 @@ class ApiResponseServiceProvider extends ServiceProvider
         });
 
         // エラー
-        Response::macro('ApiError', function ($contents, $message, $statusCode) {
+        Response::macro('ApiError', function ($contents, $message, $statusCode = 500) {
             return response()->json([
                 'success'    => false,
                 'contents'   => $contents,
