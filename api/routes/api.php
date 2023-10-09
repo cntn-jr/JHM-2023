@@ -4,9 +4,10 @@ use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EnrollmentClassController;
 use App\Http\Controllers\EntryController;
-use App\Http\Controllers\HavingClassController;
+use App\Http\Controllers\DepartmentHeadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SelectionScheduleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -65,10 +66,10 @@ Route::prefix('manager')->group(function () {
             Route::delete('/{id}', [DepartmentController::class, 'destroy']);
             // クラス担任の管理
             Route::prefix('assign')->group(function () {
-                Route::post('/', [HavingClassController::class, 'store']);
-                Route::post('/finalize', [HavingClassController::class, 'finalize']);
-                Route::put('/{id}', [HavingClassController::class, 'update']);
-                Route::delete('/{id}', [HavingClassController::class, 'destroy']);
+                Route::post('/', [DepartmentHeadController::class, 'store']);
+                Route::post('/finalize', [DepartmentHeadController::class, 'finalize']);
+                Route::put('/{id}', [DepartmentHeadController::class, 'update']);
+                Route::delete('/{id}', [DepartmentHeadController::class, 'destroy']);
             });
         });
     });
