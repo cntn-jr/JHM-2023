@@ -21,7 +21,7 @@ class ApiResponseServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // 成功
-        Response::macro('ApiSuccess', function ($contents, $message, $statusCode = 200) {
+        Response::macro('ApiSuccess', function ($contents = [], $message = '', $statusCode = 200) {
             return response()->json([
                 'success'    => true,
                 'contents'   => $contents,
@@ -31,7 +31,7 @@ class ApiResponseServiceProvider extends ServiceProvider
         });
 
         // 失敗
-        Response::macro('ApiFailed', function ($contents, $message, $statusCode = 200) {
+        Response::macro('ApiFailed', function ($contents = [], $message = '', $statusCode = 200) {
             return response()->json([
                 'success'    => false,
                 'contents'   => $contents,
@@ -41,7 +41,7 @@ class ApiResponseServiceProvider extends ServiceProvider
         });
 
         // エラー
-        Response::macro('ApiError', function ($contents, $message, $statusCode = 500) {
+        Response::macro('ApiError', function ($contents = [], $message = '', $statusCode = 500) {
             return response()->json([
                 'success'    => false,
                 'contents'   => $contents,
