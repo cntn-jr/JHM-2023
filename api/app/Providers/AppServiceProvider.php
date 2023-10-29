@@ -16,11 +16,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(HomeController::class, function (Application $app) {
-            $studentRepository = new StudentRepository();
-            $entryRepository = new EntryRepository();
-            return new HomeService($entryRepository, $studentRepository);
-        });
     }
 
     /**

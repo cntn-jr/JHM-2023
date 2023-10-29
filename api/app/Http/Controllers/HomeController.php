@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
 
-    public function __construct(private readonly HomeService $homeService)
+    public function __construct(private readonly ?HomeService $homeService)
     {}
 
     public function manager()
