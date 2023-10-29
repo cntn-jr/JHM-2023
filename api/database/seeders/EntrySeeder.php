@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Const\EntryResult;
 use App\Models\Entry;
 use App\Repositories\CompanyRepository;
+use App\Repositories\EntryRepository;
 use App\Repositories\SchoolRepository;
 use App\Repositories\StudentRepository;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,9 +18,10 @@ class EntrySeeder extends Seeder
      */
     public function run(): void
     {
-        $schoolRepository  = new SchoolRepository();
         $companyRepository = new CompanyRepository();
-        $studentRepository = new StudentRepository();
+        $entryRepository   = new EntryRepository();
+        $schoolRepository  = new SchoolRepository();
+        $studentRepository = new StudentRepository($entryRepository);
         $schools = $schoolRepository->findAll();
         foreach ($schools as $school) {
             $students = $studentRepository->findScopedSchool($school->id);
@@ -33,12 +35,19 @@ class EntrySeeder extends Seeder
                     $companyNum
                 );
                 foreach ($companies as $company) {
+                    $result = fake()->randomElement(EntryResult::ALL);
+                    $passedDatetime = fake()->dateTimeBetween('2023-05-01', '2023-12-20');
+                    $passedDate = $passedDatetime->format('Y-m-d');
                     Entry::factory()->create([
-                        'student_id' => $student->id,
-                        'company_id' => $company->id,
-                        'result'     => fake()->randomElement(EntryResult::ALL),
+                        'student_id'  => $student->id,
+                        'company_id'  => $company->id,
+                        'result'      => $result,
+                        'passed_date' => $result == EntryResult::PASSING ? $passedDate : null,
                     ]);
                 }
+
+                // 応募フラグの切り替え
+                $studentRepository->proceedEntryFlg($student->id);
             }
         }
     }

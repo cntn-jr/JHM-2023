@@ -46,8 +46,25 @@ class Student extends User
         return $this->belongsTo(Student::class);
     }
 
-    public function scopeSchool(Builder $query, int $school_id): void
+    /**
+     * 応募情報に関する中間テーブルの情報を取得
+     *
+     * @return HasMany
+     */
+    public function entries(): HasMany
     {
-        $query->where('school_id', $school_id);
+        return $this->hasMany(Entry::class);
+    }
+
+    /**
+     * 学校で絞り込み
+     *
+     * @param Builder $query
+     * @param integer $schoolId
+     * @return void
+     */
+    public function scopeSchool(Builder $query, int $schoolId): void
+    {
+        $query->where('school_id', $schoolId);
     }
 }

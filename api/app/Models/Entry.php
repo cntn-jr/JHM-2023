@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,7 +19,7 @@ class Entry extends Model
      */
     public function students(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'student_id');
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
     /**
@@ -39,5 +40,29 @@ class Entry extends Model
     public function activityStatuses(): HasMany
     {
         return $this->hasMany(ActivityStatus::class);
+    }
+
+    /**
+     * 生徒で絞り込む
+     *
+     * @param Builder $query
+     * @param integer $studentId
+     * @return void
+     */
+    public function scopeStudent(Builder $query, int $studentId): void
+    {
+        $query->where('student_id', $studentId);
+    }
+
+    /**
+     * 生徒で絞り込む
+     *
+     * @param Builder $query
+     * @param integer $studentId
+     * @return void
+     */
+    public function scopeResult(Builder $query, int $result): void
+    {
+        $query->where('result', $result);
     }
 }

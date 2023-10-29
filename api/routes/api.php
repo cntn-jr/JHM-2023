@@ -40,7 +40,7 @@ Route::prefix('administrator')->group(function () {
     Route::get('/login', [AuthenticateController::class, 'loginAdministrator']);
     Route::middleware(['auth:sanctum'])->group(function () {
         // ホーム
-        Route::get('/', [HomeController::class, 'index']);
+        Route::get('/home', [HomeController::class, 'administrator']);
         // 学校関連
         Route::prefix('school')->group(function () {
             Route::get('/', [SchoolController::class, 'index']);
@@ -58,7 +58,7 @@ Route::prefix('manager')->group(function () {
     Route::post('/login', [AuthenticateController::class, 'loginManager']);
     Route::middleware(['auth:sanctum'])->group(function () {
         // ホーム
-        Route::get('index', [HomeController::class, 'index']);
+        Route::get('/home', [HomeController::class, 'manager']);
         // 教師情報の管理
         Route::prefix('teacher')->group(function () {
             Route::get('/', [TeacherController::class, 'index']);
@@ -92,7 +92,7 @@ Route::prefix('teacher')->group(function () {
     Route::post('login/google/callback', [AuthenticateController::class, 'handleGoogleCallback']);
     Route::middleware(['auth:sanctum'])->group(function () {
         // ホーム
-        Route::get('/', [HomeController::class, 'index']);
+        Route::get('/home', [HomeController::class, 'teacher']);
         // 生徒情報管理
         Route::prefix('student')->group(function () {
             Route::get('/', [StudentController::class, 'index']);
@@ -135,7 +135,7 @@ Route::prefix('student')->group(function () {
     Route::post('login/google/callback', [AuthenticateController::class, 'handleGoogleCallback']);
     Route::middleware(['auth:sanctum'])->group(function () {
         // ホーム
-        Route::get('/', [HomeController::class, 'index']);
+        Route::get('/home', [HomeController::class, 'student']);
         // 企業情報管理
         Route::prefix('company')->group(function () {
             Route::get('/', [CompanyController::class, 'index']);
