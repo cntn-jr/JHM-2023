@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Teacher extends User
 {
@@ -31,14 +32,29 @@ class Teacher extends User
         });
     }
 
+    // 教師が勤務する学校情報
     public function school(): BelongsTo
     {
         return $this->belongsTo(Manager::class);
     }
 
+    // 教師が作成した企業情報
     public function companies(): HasMany
     {
         return $this->hasMany(Company::class, 'user_id');
+    }
+
+    // 教師に紐づく学科情報
+    public function departments(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Department::class,
+            DepartmentHead::class,
+            'teacher_id',
+            'id',
+            'id',
+            'department_id'
+        );
     }
 
     /**
