@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Http\Requests\CreateTeacherRequest;
+use App\Models\Teacher;
 use App\Repositories\TeacherRepository;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TeacherService {
 
@@ -19,5 +22,41 @@ class TeacherService {
         return [
             'teachers' => $teachers,
         ];
+    }
+
+    public function createAccount(CreateTeacherRequest $request)
+    {
+        $loginManager = Auth::user();
+
+        // 教師アカウント作成に必要な入力値を抽出
+        $columns = $request->only([
+            'first_name',
+            'last_name',
+            'first_name_kana',
+            'last_name_kana',
+            'email',
+            'password',
+        ]);
+
+        // リクエスト以外の必要な値を付与
+        $columns['school_id'] = $loginManager->school_id;
+
+        Log::debug($columns);
+
+        // 教師アカウント作成
+        return $this->teacherRepository->createAccount($columns);
+    }
+
+    public function confirm(CreateTeacherRequest $request)
+    {
+        // バリデーションチェックに通ったらそのまま入力値を返す
+        return $request->only([
+            'first_name',
+            'last_name',
+            'first_name_kana',
+            'last_name_kana',
+            'email',
+            'password',
+        ]);
     }
 }

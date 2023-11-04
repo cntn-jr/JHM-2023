@@ -15,6 +15,16 @@ class Teacher extends User
 
     protected $table = 'users';
 
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'first_name_kana',
+        'last_name_kana',
+        'email',
+        'password',
+        'school_id',
+    ];
+
     protected $attributes = [
         'role' => Role::TEACHER,
     ];
