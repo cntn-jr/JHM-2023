@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTeacherRequest;
+use App\Http\Requests\UpdateTeacherRequest;
 use App\Services\TeacherService;
 use Illuminate\Http\Request;
 
@@ -45,6 +46,24 @@ class TeacherController extends Controller
 
         return response()->ApiFailed(
             message   : 'failed to create teacher account',
+            contents  : $data,
+            statusCode: 500,
+        );
+    }
+
+    public function update(UpdateTeacherRequest $request)
+    {
+        $data = $this->teacherService->updateAccount($request);
+
+        if ($data) {
+            return response()->ApiSuccess(
+                message : 'updating teacher account in successful.',
+                contents: $data,
+            );
+        }
+
+        return response()->ApiFailed(
+            message   : 'failed to update teacher account',
             contents  : $data,
             statusCode: 500,
         );

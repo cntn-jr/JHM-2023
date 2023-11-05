@@ -64,7 +64,7 @@ Route::prefix('manager')->group(function () {
             Route::get('/', [TeacherController::class, 'index']);
             Route::post('/', [TeacherController::class, 'confirm']);
             Route::post('/finalize', [TeacherController::class, 'finalize']);
-            Route::put('/{id}', [TeacherController::class, 'update']);
+            Route::put('/', [TeacherController::class, 'update']);
             Route::delete('/{id}', [TeacherController::class, 'destroy']);
         });
         // クラス情報の管理

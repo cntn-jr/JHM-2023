@@ -5,8 +5,20 @@ namespace App\Repositories;
 use App\Models\Teacher;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 
 class TeacherRepository {
+
+    /**
+     * IDから教師情報を取得する
+     *
+     * @param integer $teacherId
+     * @return Teacher
+     */
+    public function findById(int $teacherId) :Teacher
+    {
+        return Teacher::query()->find($teacherId);
+    }
 
     /**
      * 教師の全情報を取得する
@@ -49,11 +61,25 @@ class TeacherRepository {
      * 教師アカウントを作成する
      *
      * @param array $teacherColumns
-     * @return void
+     * @return Teacher
      */
-    public function createAccount(array $teacherColumns): Teacher | false
+    public function createAccount(array $teacherColumns): Teacher
     {
-        $teacher = Teacher::create($teacherColumns);
+        $teacher = Teacher::query()->create($teacherColumns);
         return $teacher;
+    }
+
+    public function updateAccount(array $teacherColumns): bool
+    {
+        $teacher = $this->findById($teacherColumns['teacher_id']);
+
+        // 教師情報を更新する
+        $teacher->first_name      = $teacherColumns['first_name'];
+        $teacher->last_name       = $teacherColumns['last_name'];
+        $teacher->first_name_kana = $teacherColumns['first_name_kana'];
+        $teacher->last_name_kana  = $teacherColumns['last_name_kana'];
+        $teacher->email           = $teacherColumns['email'];
+        $teacher->password        = $teacherColumns['password'];
+        return $teacher->save();
     }
 }
