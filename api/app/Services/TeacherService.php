@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\CreateTeacherRequest;
+use App\Http\Requests\UpdateTeacherRequest;
 use App\Models\Teacher;
 use App\Repositories\TeacherRepository;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ class TeacherService {
     public function __construct(readonly private ?TeacherRepository $teacherRepository)
     {}
 
-    public function index()
+    public function index(): array
     {
         $loginManager = Auth::user();
 
@@ -24,7 +25,7 @@ class TeacherService {
         ];
     }
 
-    public function createAccount(CreateTeacherRequest $request)
+    public function createAccount(CreateTeacherRequest $request): Teacher
     {
         $loginManager = Auth::user();
 
@@ -41,13 +42,11 @@ class TeacherService {
         // リクエスト以外の必要な値を付与
         $columns['school_id'] = $loginManager->school_id;
 
-        Log::debug($columns);
-
         // 教師アカウント作成
         return $this->teacherRepository->createAccount($columns);
     }
 
-    public function confirm(CreateTeacherRequest $request)
+    public function confirm(CreateTeacherRequest $request): array
     {
         // バリデーションチェックに通ったらそのまま入力値を返す
         return $request->only([
@@ -58,5 +57,22 @@ class TeacherService {
             'email',
             'password',
         ]);
+    }
+
+    public function updateAccount(UpdateTeacherRequest $request): bool
+    {
+        // 教師アカウント作成に必要な入力値を抽出
+        $columns = $request->only([
+            'teacher_id',
+            'first_name',
+            'last_name',
+            'first_name_kana',
+            'last_name_kana',
+            'email',
+            'password',
+        ]);
+
+        // 教師情報を更新する
+        return $this->teacherRepository->updateAccount($columns);
     }
 }

@@ -7,8 +7,9 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
-class CreateTeacherRequest extends FormRequest
+class UpdateTeacherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +27,18 @@ class CreateTeacherRequest extends FormRequest
      */
     public function rules(): array
     {
+        $emailValidation = [
+            'required',
+            'email',
+            Rule::unique('users')->ignore($this->input('teacher_id')),
+        ];
         return [
+            'teacher_id'            => 'exists:users,id',
             'first_name'            => 'required|string|max:63',
             'last_name'             => 'required|string|max:63',
             'first_name_kana'       => 'required|hiragana|max:127',
             'last_name_kana'        => 'required|hiragana|max:127',
-            'email'                 => 'required|email|unique:users,email',
+            'email'                 => $emailValidation,
             'password'              => 'required|password|confirmed',
             'password_confirmation' => 'required',
         ];
@@ -62,6 +69,7 @@ class CreateTeacherRequest extends FormRequest
     public function attributes()
     {
         return [
+            'teacher_id'            => '教師ID',
             'first_name'            => '名',
             'last_name'             => '姓',
             'first_name_kana'       => 'めい',
@@ -79,6 +87,7 @@ class CreateTeacherRequest extends FormRequest
      */
     public function messages() {
         return [
+            'teacher_id.exists'        => '不正なパラメーターが存在しています。',
             'first_name.required'      => ':attributeは必須項目です。',
             'first_name.string'        => ':attributeに使用できない文字列が含まれています。',
             'first_name.max'           => ':attributeは63文字までです。',
