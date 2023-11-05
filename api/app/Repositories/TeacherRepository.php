@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Teacher;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 
 class TeacherRepository {
@@ -42,5 +43,17 @@ class TeacherRepository {
             ->school($school_id)
             ->with('departments')
             ->get();
+    }
+
+    /**
+     * 教師アカウントを作成する
+     *
+     * @param array $teacherColumns
+     * @return void
+     */
+    public function createAccount(array $teacherColumns): Teacher | false
+    {
+        $teacher = Teacher::create($teacherColumns);
+        return $teacher;
     }
 }

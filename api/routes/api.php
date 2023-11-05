@@ -62,7 +62,7 @@ Route::prefix('manager')->group(function () {
         // 教師情報の管理
         Route::prefix('teacher')->group(function () {
             Route::get('/', [TeacherController::class, 'index']);
-            Route::post('/', [TeacherController::class, 'store']);
+            Route::post('/', [TeacherController::class, 'confirm']);
             Route::post('/finalize', [TeacherController::class, 'finalize']);
             Route::put('/{id}', [TeacherController::class, 'update']);
             Route::delete('/{id}', [TeacherController::class, 'destroy']);
