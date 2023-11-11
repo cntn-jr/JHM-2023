@@ -17,7 +17,7 @@ class TeacherRepository {
      */
     public function findById(int $teacherId) :Teacher
     {
-        return Teacher::query()->find($teacherId);
+        return Teacher::query()->findOrFail($teacherId);
     }
 
     /**
@@ -69,6 +69,12 @@ class TeacherRepository {
         return $teacher;
     }
 
+    /**
+     * 教師アカウントを更新する
+     *
+     * @param array $teacherColumns
+     * @return boolean
+     */
     public function updateAccount(array $teacherColumns): bool
     {
         $teacher = $this->findById($teacherColumns['teacher_id']);
@@ -81,5 +87,17 @@ class TeacherRepository {
         $teacher->email           = $teacherColumns['email'];
         $teacher->password        = $teacherColumns['password'];
         return $teacher->save();
+    }
+
+    /**
+     * 教師アカウントを論理削除する
+     *
+     * @param integer $teacherId
+     * @return void
+     */
+    public function deleteAccount(int $teacherId): bool | null
+    {
+        $teacher = $this->findById($teacherId);
+        return $teacher->delete();
     }
 }

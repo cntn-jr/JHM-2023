@@ -3,11 +3,11 @@
 namespace App\Services;
 
 use App\Http\Requests\CreateTeacherRequest;
+use App\Http\Requests\DestroyTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use App\Models\Teacher;
 use App\Repositories\TeacherRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class TeacherService {
 
@@ -59,7 +59,7 @@ class TeacherService {
         ]);
     }
 
-    public function updateAccount(UpdateTeacherRequest $request): bool
+    public function updateAccount(UpdateTeacherRequest $request): array
     {
         // 教師アカウント作成に必要な入力値を抽出
         $columns = $request->only([
@@ -73,6 +73,20 @@ class TeacherService {
         ]);
 
         // 教師情報を更新する
-        return $this->teacherRepository->updateAccount($columns);
+        $result = $this->teacherRepository->updateAccount($columns);
+        return [
+            'result' => $result,
+        ];
+    }
+
+    public function deleteAccount(DestroyTeacherRequest $request): array
+    {
+        $teacherId = $request->input('teacher_id');
+
+        // 教師アカウントを削除する
+        $result = (bool)$this->teacherRepository->deleteAccount($teacherId);
+        return [
+            'result' => $result,
+        ];
     }
 }
