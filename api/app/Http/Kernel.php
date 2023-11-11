@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Manager;
+use App\Http\Middleware\Teacher;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -53,15 +55,37 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
-        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'auth'             => \App\Http\Middleware\Authenticate::class,
+        'auth.basic'       => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.session'     => \Illuminate\Session\Middleware\AuthenticateSession::class,
+        'cache.headers'    => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can'              => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest'            => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'manager'          => \App\Http\Middleware\Manager::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
-        'signed' => \App\Http\Middleware\ValidateSignature::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'signed'           => \App\Http\Middleware\ValidateSignature::class,
+        'throttle'         => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified'         => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    ];
+
+    /**
+     * ミドルウェアの優先順位でソートされたリスト
+     *
+     * これにより、非グローバルミドルウェアは常に指定する順序で実行されます。
+     *
+     * @var string[]
+     */
+    protected $middlewarePriority = [
+        \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
+        \Illuminate\Cookie\Middleware\EncryptCookies::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
+        \Illuminate\Contracts\Session\Middleware\AuthenticatesSessions::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \Illuminate\Auth\Middleware\Authorize::class,
+        Manager::class,
     ];
 }

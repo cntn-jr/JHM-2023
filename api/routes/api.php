@@ -56,7 +56,7 @@ Route::prefix('administrator')->group(function () {
 Route::prefix('manager')->group(function () {
     // ログイン
     Route::post('/login', [AuthenticateController::class, 'loginManager']);
-    Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['auth:sanctum', 'manager'])->group(function () {
         // ホーム
         Route::get('/home', [HomeController::class, 'manager']);
         // 教師情報の管理
