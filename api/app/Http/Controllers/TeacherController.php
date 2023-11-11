@@ -56,7 +56,7 @@ class TeacherController extends Controller
     {
         $data = $this->teacherService->updateAccount($request);
 
-        if ($data) {
+        if ($data['result']) {
             return response()->ApiSuccess(
                 message : 'updating teacher account in successful.',
                 contents: $data,

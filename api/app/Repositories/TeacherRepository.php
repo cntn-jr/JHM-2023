@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Teacher;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 
 class TeacherRepository {
@@ -17,7 +18,13 @@ class TeacherRepository {
      */
     public function findById(int $teacherId) :Teacher
     {
-        return Teacher::query()->findOrFail($teacherId);
+        try {
+            return Teacher::query()->findOrFail($teacherId);
+        } catch (ModelNotFoundException $e) {
+            throw new Exception("this teacher-id not exist.", 404);
+        } catch (Exception $e) {
+            throw new Exception();
+        }
     }
 
     /**
@@ -72,13 +79,12 @@ class TeacherRepository {
     /**
      * 教師アカウントを更新する
      *
+     * @param Teacher $teacher
      * @param array $teacherColumns
      * @return boolean
      */
-    public function updateAccount(array $teacherColumns): bool
+    public function updateAccount(Teacher $teacher, array $teacherColumns): bool
     {
-        $teacher = $this->findById($teacherColumns['teacher_id']);
-
         // 教師情報を更新する
         $teacher->first_name      = $teacherColumns['first_name'];
         $teacher->last_name       = $teacherColumns['last_name'];
@@ -92,12 +98,11 @@ class TeacherRepository {
     /**
      * 教師アカウントを論理削除する
      *
-     * @param integer $teacherId
+     * @param Teacher $teacher
      * @return void
      */
-    public function deleteAccount(int $teacherId): bool | null
+    public function deleteAccount(Teacher $teacher): bool | null
     {
-        $teacher = $this->findById($teacherId);
         return $teacher->delete();
     }
 }

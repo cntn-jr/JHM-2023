@@ -84,6 +84,8 @@ class TeacherService {
      */
     public function updateAccount(UpdateTeacherRequest $request): array
     {
+        $loginManager = Auth::user();
+
         // 教師アカウント作成に必要な入力値を抽出
         $columns = $request->only([
             'teacher_id',
@@ -95,10 +97,21 @@ class TeacherService {
             'password',
         ]);
 
-        // 教師情報を更新する
-        $result = $this->teacherRepository->updateAccount($columns);
+        // 管理下の教師かどうか確認する
+        $teacher = $this->teacherRepository->findById($columns['teacher_id']);
+
+        // 管理下の教師かどうか確認する
+        if ($this->isManagedTeacher($teacher)) {
+
+            // 教師情報を更新する
+            $result = $this->teacherRepository->updateAccount($teacher, $columns);
+            return [
+                'result' => $result,
+            ];
+        }
         return [
-            'result' => $result,
+            'result'  => false,
+            'message' => 'Not a supervised teacher.',
         ];
     }
 
@@ -111,11 +124,33 @@ class TeacherService {
     public function deleteAccount(DestroyTeacherRequest $request): array
     {
         $teacherId = $request->input('teacher_id');
+        $teacher = $this->teacherRepository->findById($teacherId);
 
-        // 教師アカウントを削除する
-        $result = (bool)$this->teacherRepository->deleteAccount($teacherId);
+        // 管理下の教師かどうか確認する
+        if ($this->isManagedTeacher($teacher)) {
+
+            // 教師アカウントを削除する
+            $result = $this->teacherRepository->deleteAccount($teacher);
+            return [
+                'result' => $result,
+            ];
+        }
+
         return [
-            'result' => $result,
+            'result' => false,
+            'message' => 'Not a supervised teacher.',
         ];
+    }
+
+    /**
+     * 管理下の教師かどうかを判定する
+     *
+     * @param Teacher $teacher
+     * @return boolean
+     */
+    private function isManagedTeacher(Teacher $teacher): bool
+    {
+        $loginManager = Auth::user();
+        return $loginManager->school_id == $teacher->school_id;
     }
 }
