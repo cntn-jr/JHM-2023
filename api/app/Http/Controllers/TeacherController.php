@@ -74,7 +74,7 @@ class TeacherController extends Controller
     {
         $data = $this->teacherService->deleteAccount($request);
 
-        if ($data) {
+        if ($data['result']) {
             return response()->ApiSuccess(
                 message : 'deleting teacher account in successful.',
                 contents: $data,

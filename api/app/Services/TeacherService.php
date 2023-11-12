@@ -84,7 +84,6 @@ class TeacherService {
      */
     public function updateAccount(UpdateTeacherRequest $request): array
     {
-        $loginManager = Auth::user();
 
         // 教師アカウント作成に必要な入力値を抽出
         $columns = $request->only([
@@ -123,6 +122,8 @@ class TeacherService {
      */
     public function deleteAccount(DestroyTeacherRequest $request): array
     {
+
+        // 指定された教師を取得する
         $teacherId = $request->input('teacher_id');
         $teacher = $this->teacherRepository->findById($teacherId);
 
