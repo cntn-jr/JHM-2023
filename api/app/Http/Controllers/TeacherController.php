@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTeacherRequest;
+use App\Http\Requests\DestroyTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use App\Services\TeacherService;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class TeacherController extends Controller
     {
         $data = $this->teacherService->updateAccount($request);
 
-        if ($data) {
+        if ($data['result']) {
             return response()->ApiSuccess(
                 message : 'updating teacher account in successful.',
                 contents: $data,
@@ -64,6 +65,24 @@ class TeacherController extends Controller
 
         return response()->ApiFailed(
             message   : 'failed to update teacher account',
+            contents  : $data,
+            statusCode: 500,
+        );
+    }
+
+    public function destroy(DestroyTeacherRequest $request)
+    {
+        $data = $this->teacherService->deleteAccount($request);
+
+        if ($data['result']) {
+            return response()->ApiSuccess(
+                message : 'deleting teacher account in successful.',
+                contents: $data,
+            );
+        }
+
+        return response()->ApiFailed(
+            message   : 'failed to delete teacher account',
             contents  : $data,
             statusCode: 500,
         );

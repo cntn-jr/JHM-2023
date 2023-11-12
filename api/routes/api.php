@@ -56,7 +56,7 @@ Route::prefix('administrator')->group(function () {
 Route::prefix('manager')->group(function () {
     // ログイン
     Route::post('/login', [AuthenticateController::class, 'loginManager']);
-    Route::middleware(['auth:sanctum'])->group(function () {
+    Route::middleware(['auth:sanctum', 'manager'])->group(function () {
         // ホーム
         Route::get('/home', [HomeController::class, 'manager']);
         // 教師情報の管理
@@ -65,7 +65,7 @@ Route::prefix('manager')->group(function () {
             Route::post('/', [TeacherController::class, 'confirm']);
             Route::post('/finalize', [TeacherController::class, 'finalize']);
             Route::put('/', [TeacherController::class, 'update']);
-            Route::delete('/{id}', [TeacherController::class, 'destroy']);
+            Route::delete('/', [TeacherController::class, 'destroy']);
         });
         // クラス情報の管理
         Route::prefix('class')->group(function () {

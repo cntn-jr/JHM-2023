@@ -3,17 +3,22 @@
 namespace App\Services;
 
 use App\Http\Requests\CreateTeacherRequest;
+use App\Http\Requests\DestroyTeacherRequest;
 use App\Http\Requests\UpdateTeacherRequest;
 use App\Models\Teacher;
 use App\Repositories\TeacherRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class TeacherService {
 
     public function __construct(readonly private ?TeacherRepository $teacherRepository)
     {}
 
+    /**
+     * 教師一覧情報を取得する
+     *
+     * @return array
+     */
     public function index(): array
     {
         $loginManager = Auth::user();
@@ -25,6 +30,12 @@ class TeacherService {
         ];
     }
 
+    /**
+     * 教師アカウントを作成する
+     *
+     * @param CreateTeacherRequest $request
+     * @return Teacher
+     */
     public function createAccount(CreateTeacherRequest $request): Teacher
     {
         $loginManager = Auth::user();
@@ -46,6 +57,12 @@ class TeacherService {
         return $this->teacherRepository->createAccount($columns);
     }
 
+    /**
+     * 作成教師アカウントの確認
+     *
+     * @param CreateTeacherRequest $request
+     * @return array
+     */
     public function confirm(CreateTeacherRequest $request): array
     {
         // バリデーションチェックに通ったらそのまま入力値を返す
@@ -59,8 +76,15 @@ class TeacherService {
         ]);
     }
 
-    public function updateAccount(UpdateTeacherRequest $request): bool
+    /**
+     * 教師アカウントを更新する
+     *
+     * @param UpdateTeacherRequest $request
+     * @return array
+     */
+    public function updateAccount(UpdateTeacherRequest $request): array
     {
+
         // 教師アカウント作成に必要な入力値を抽出
         $columns = $request->only([
             'teacher_id',
@@ -72,7 +96,62 @@ class TeacherService {
             'password',
         ]);
 
-        // 教師情報を更新する
-        return $this->teacherRepository->updateAccount($columns);
+        // 管理下の教師かどうか確認する
+        $teacher = $this->teacherRepository->findById($columns['teacher_id']);
+
+        // 管理下の教師かどうか確認する
+        if ($this->isManagedTeacher($teacher)) {
+
+            // 教師情報を更新する
+            $result = $this->teacherRepository->updateAccount($teacher, $columns);
+            return [
+                'result' => $result,
+            ];
+        }
+        return [
+            'result'  => false,
+            'message' => 'Not a supervised teacher.',
+        ];
+    }
+
+    /**
+     * 教師アカウントを削除する
+     *
+     * @param DestroyTeacherRequest $request
+     * @return array
+     */
+    public function deleteAccount(DestroyTeacherRequest $request): array
+    {
+
+        // 指定された教師を取得する
+        $teacherId = $request->input('teacher_id');
+        $teacher = $this->teacherRepository->findById($teacherId);
+
+        // 管理下の教師かどうか確認する
+        if ($this->isManagedTeacher($teacher)) {
+
+            // 教師アカウントを削除する
+            $result = $this->teacherRepository->deleteAccount($teacher);
+            return [
+                'result' => $result,
+            ];
+        }
+
+        return [
+            'result' => false,
+            'message' => 'Not a supervised teacher.',
+        ];
+    }
+
+    /**
+     * 管理下の教師かどうかを判定する
+     *
+     * @param Teacher $teacher
+     * @return boolean
+     */
+    private function isManagedTeacher(Teacher $teacher): bool
+    {
+        $loginManager = Auth::user();
+        return $loginManager->school_id == $teacher->school_id;
     }
 }

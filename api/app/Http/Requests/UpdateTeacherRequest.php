@@ -16,8 +16,7 @@ class UpdateTeacherRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $loginUser = Auth::user();
-        return $loginUser->role == Role::MANAGER;
+        return true;
     }
 
     /**
