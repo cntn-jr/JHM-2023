@@ -170,6 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         // 自作プロバイダー
         App\Providers\ApiResponseServiceProvider::class,
+        App\Providers\UtilsServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -184,7 +185,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+        'CsvHandler' => App\Facades\CsvHandler::class,
     ])->toArray(),
 
 ];
