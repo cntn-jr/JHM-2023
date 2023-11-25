@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateTeacherRequest;
-use App\Http\Requests\DestroyTeacherRequest;
-use App\Http\Requests\UpdateTeacherRequest;
+use App\Http\Requests\manager\CreateTeacherRequest;
+use App\Http\Requests\manager\DestroyTeacherRequest;
+use App\Http\Requests\manager\UpdateTeacherRequest;
+use App\Http\Requests\manager\UploadTeacherCsvRequest;
 use App\Services\TeacherService;
-use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
@@ -84,6 +84,17 @@ class TeacherController extends Controller
         return response()->ApiFailed(
             message   : 'failed to delete teacher account',
             contents  : $data,
+            statusCode: 500,
+        );
+    }
+
+    public function csvUpload(UploadTeacherCsvRequest $request)
+    {
+        $result = $this->teacherService->uploadCsv($request);
+
+        return response()->ApiFailed(
+            message   : $result['message'],
+            contents  : $result,
             statusCode: 500,
         );
     }

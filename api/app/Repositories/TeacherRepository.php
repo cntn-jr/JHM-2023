@@ -6,7 +6,6 @@ use App\Models\Teacher;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Log;
 
 class TeacherRepository {
 
@@ -99,7 +98,7 @@ class TeacherRepository {
      * 教師アカウントを論理削除する
      *
      * @param Teacher $teacher
-     * @return void
+     * @return boolean
      */
     public function deleteAccount(Teacher $teacher): bool | null
     {

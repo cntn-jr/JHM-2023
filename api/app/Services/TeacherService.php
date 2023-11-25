@@ -2,14 +2,29 @@
 
 namespace App\Services;
 
-use App\Http\Requests\CreateTeacherRequest;
-use App\Http\Requests\DestroyTeacherRequest;
-use App\Http\Requests\UpdateTeacherRequest;
+use App\Facades\CsvHandler;
+use App\Http\Requests\manager\CreateTeacherRequest;
+use App\Http\Requests\manager\DestroyTeacherRequest;
+use App\Http\Requests\manager\UpdateTeacherRequest;
+use App\Http\Requests\manager\UploadTeacherCsvRequest;
 use App\Models\Teacher;
 use App\Repositories\TeacherRepository;
+use Illuminate\Auth\Events\Validated;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 
 class TeacherService {
+
+    const CSV_HEADER = [
+        'first_name',
+        'last_name',
+        'first_name_kana',
+        'last_name_kana',
+        'email',
+        'password',
+    ];
 
     public function __construct(readonly private ?TeacherRepository $teacherRepository)
     {}
@@ -138,8 +153,44 @@ class TeacherService {
         }
 
         return [
-            'result' => false,
+            'result'  => false,
             'message' => 'Not a supervised teacher.',
+        ];
+    }
+
+    public function uploadCsv(UploadTeacherCsvRequest $request)
+    {
+
+        // ファイル形式を確認する
+        $requestCsvFile = $request->file('teacher_csv');
+        if (!CsvHandler::isCsvExtension($requestCsvFile)) {
+            return [
+                'result'  => false,
+                'message' => 'File extension is invalid.',
+            ];
+        }
+
+        // ファイルを保存
+        $filePath = CsvHandler::save($requestCsvFile);
+
+        // ファイルの保存に失敗
+        if (!$filePath) {
+            return [
+                'result'  => false,
+                'message' => 'Failed to save the CSV file.',
+            ];
+        }
+
+        // ファイル内容を取得する
+        $contents = CsvHandler::getContents($filePath, self::CSV_HEADER);
+
+        // バリデーションを実行
+        $validatedContents = $this->validateTeachers($contents);
+
+        return [
+            'result'  => true,
+            'message' => '',
+            'data'    => $validatedContents,
         ];
     }
 
@@ -153,5 +204,47 @@ class TeacherService {
     {
         $loginManager = Auth::user();
         return $loginManager->school_id == $teacher->school_id;
+    }
+
+    /**
+     * CSVデータが教師情報のバリデーションにかける
+     *
+     * @param array $teachers
+     * @return array
+     */
+    private function validateTeachers(array $teachers): array
+    {
+
+        // データが100件を超える場合データ挿入を中止する
+        if (count($teachers) > 100) {
+            return [];
+        }
+
+        // 行ごとにバリデーションを実行する
+        $validatedContents = array();
+        foreach ($teachers as $teacher) {
+            $rowData = array(
+                'data'   => [],
+                'errors' => [],
+            );
+            $validator = Validator::make($teacher, [
+                'first_name'      => 'required|string|max:63',
+                'last_name'       => 'required|string|max:63',
+                'first_name_kana' => 'required|hiragana|max:127',
+                'last_name_kana'  => 'required|hiragana|max:127',
+                'email'           => 'required|email|unique:users,email',
+                'password'        => ['required', 'max:32', Password::min(8)->letters()->mixedCase()->numbers()],
+            ]);
+
+            // エラーメッセージを挿入する
+            if ($validator->fails()) {
+                $rowData['errors'] = $validator->errors();
+            }
+
+            // バリデーション済みのデータを挿入する
+            $rowData['data'] = $validator->getData();
+            $validatedContents[] = $rowData;
+        }
+        return $validatedContents;
     }
 }

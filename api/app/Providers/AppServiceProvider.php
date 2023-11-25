@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // 教師IDの存在確認
-        Validator::extend('isTeacher', function ($attribute, $value, $parameter) {
+        Validator::extend('is_teacher', function ($attribute, $value, $parameter) {
             return Teacher::query()->where('id', $value)->exists();
         });
     }

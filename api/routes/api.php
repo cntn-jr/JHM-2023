@@ -66,6 +66,7 @@ Route::prefix('manager')->group(function () {
             Route::post('/finalize', [TeacherController::class, 'finalize']);
             Route::put('/', [TeacherController::class, 'update']);
             Route::delete('/', [TeacherController::class, 'destroy']);
+            Route::post('csv/upload', [TeacherController::class, 'csvUpload']);
         });
         // クラス情報の管理
         Route::prefix('class')->group(function () {

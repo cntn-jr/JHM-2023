@@ -18403,8 +18403,10 @@
      */ 
         class CsvHandler {
                     /**
-         * 
+         * ファイル形式がCSVであることを判定する
          *
+         * @param \Illuminate\Http\UploadedFile $file
+         * @return boolean 
          * @static 
          */ 
         public static function isCsvExtension($file)
@@ -18412,14 +18414,29 @@
                         return \App\Utils\CsvHandler::isCsvExtension($file);
         }
                     /**
-         * 
+         * CSVファイルを保存
          *
+         * @param \Illuminate\Http\UploadedFile $file
+         * @return string | false
          * @static 
          */ 
-        public static function getFile()
+        public static function save($file)
         {
                         /** @var \App\Utils\CsvHandler $instance */
-                        return $instance->getFile();
+                        return $instance->save($file);
+        }
+                    /**
+         * ファイルデータを整形して配列として取得する
+         *
+         * @param string $filePath
+         * @param array $header
+         * @return array 
+         * @static 
+         */ 
+        public static function getContents($filePath, $header)
+        {
+                        /** @var \App\Utils\CsvHandler $instance */
+                        return $instance->getContents($filePath, $header);
         }
          
     }
