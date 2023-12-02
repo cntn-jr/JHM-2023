@@ -18438,6 +18438,16 @@
                         /** @var \App\Utils\CsvHandler $instance */
                         return $instance->getContents($filePath, $header);
         }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function remove($filePath)
+        {
+                        /** @var \App\Utils\CsvHandler $instance */
+                        return $instance->remove($filePath);
+        }
          
     }
      

@@ -9,6 +9,8 @@ use Log;
 
 class CsvHandler {
 
+    // TODO: CSV情報をオブジェクトにする
+
     /**
      * ファイル形式がCSVであることを判定する
      *
@@ -64,5 +66,11 @@ class CsvHandler {
             $formattedContents[] = array_combine($header, explode(',', $row));
         }
         return $formattedContents;
+    }
+
+    public function remove(string $filePath)
+    {
+        // TODO: CSVファイル削除に失敗した場合、メール送信するようにする
+        return Storage::disk('local')->delete($filePath);
     }
 }

@@ -9,11 +9,10 @@ use App\Http\Requests\manager\UpdateTeacherRequest;
 use App\Http\Requests\manager\UploadTeacherCsvRequest;
 use App\Models\Teacher;
 use App\Repositories\TeacherRepository;
-use Illuminate\Auth\Events\Validated;
-use Illuminate\Support\Collection;
+use App\Rules\UniqueInArray;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
+use Lang;
 
 class TeacherService {
 
@@ -158,7 +157,13 @@ class TeacherService {
         ];
     }
 
-    public function uploadCsv(UploadTeacherCsvRequest $request)
+    /**
+     * CSVファイルから取得したデータをバリデーションし返す
+     *
+     * @param UploadTeacherCsvRequest $request
+     * @return array
+     */
+    public function uploadCsv(UploadTeacherCsvRequest $request): array
     {
 
         // ファイル形式を確認する
@@ -186,6 +191,9 @@ class TeacherService {
 
         // バリデーションを実行
         $validatedContents = $this->validateTeachers($contents);
+
+        // 一時ファイルの削除
+        CsvHandler::remove($filePath);
 
         return [
             'result'  => true,
@@ -222,18 +230,32 @@ class TeacherService {
 
         // 行ごとにバリデーションを実行する
         $validatedContents = array();
+        $emails = array();
         foreach ($teachers as $teacher) {
             $rowData = array(
                 'data'   => [],
                 'errors' => [],
             );
+
+            // メールアドレスのバリデーションを予め設定
+            $emailValidation = [
+                'required',
+                'email',
+                'unique:users,email',
+                new UniqueInArray(
+                    $emails,
+                    Lang::get('validation.unique_in_csv')
+                ),
+            ];
+
+            // バリデーションを実行
             $validator = Validator::make($teacher, [
                 'first_name'      => 'required|string|max:63',
                 'last_name'       => 'required|string|max:63',
                 'first_name_kana' => 'required|hiragana|max:127',
                 'last_name_kana'  => 'required|hiragana|max:127',
-                'email'           => 'required|email|unique:users,email',
-                'password'        => ['required', 'max:32', Password::min(8)->letters()->mixedCase()->numbers()],
+                'email'           => $emailValidation,
+                'password'        => 'required|max:32|password',
             ]);
 
             // エラーメッセージを挿入する
@@ -244,6 +266,9 @@ class TeacherService {
             // バリデーション済みのデータを挿入する
             $rowData['data'] = $validator->getData();
             $validatedContents[] = $rowData;
+
+            // CSV中のユニーク制限のため
+            isset($teacher['email']) && $emails[] = $teacher['email'];
         }
         return $validatedContents;
     }

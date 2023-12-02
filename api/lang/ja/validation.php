@@ -152,9 +152,10 @@ return [
     'uuid'                 => 'The :attribute field must be a valid UUID.',
 
     // オリジナルバリデーション
-    'hiragana'   => ':attributeの形式が正しくありません。',
-    'is_teacher' => '存在しない教師IDです。',
-    'password'   => ':attributeはアルファベットの大文字・小文字、数字をそれぞれ１文字以上を必要とし、８〜３２文字です。',
+    'hiragana'      => ':attributeの形式が正しくありません。',
+    'is_teacher'    => '存在しない教師IDです。',
+    'password'      => ':attributeはアルファベットの大文字・小文字、数字をそれぞれ１文字以上を必要とし、８〜３２文字です。',
+    'unique_in_csv' => 'CSV中に同じメールアドレスが含まれています。',
 
     /*
     |--------------------------------------------------------------------------
