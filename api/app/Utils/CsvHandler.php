@@ -2,14 +2,12 @@
 
 namespace App\Utils;
 
-use Auth;
+use App\Facades\MailSender;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Log;
 
 class CsvHandler {
-
-    // TODO: CSV情報をオブジェクトにする
 
     /**
      * ファイル形式がCSVであることを判定する
@@ -68,9 +66,32 @@ class CsvHandler {
         return $formattedContents;
     }
 
-    public function remove(string $filePath)
+    /**
+     * ファイルを削除する
+     *
+     * @param string $filePath
+     * @return void
+     */
+    public function remove(string $filepath)
     {
-        // TODO: CSVファイル削除に失敗した場合、メール送信するようにする
-        return Storage::disk('local')->delete($filePath);
+
+         // ファイルの削除
+        $result = Storage::disk('local')->delete($filepath);
+
+        $result = false;
+
+        // ファイルの削除に失敗
+        if (!$result) {
+
+            // メール送信
+            $replacement = [
+                '{{ filepath }}' => $filepath,
+                '{{ datetime }}' => date('y-m-d h:i:s'),
+            ];
+            MailSender::sendNotification(
+                config('mail.message_master.csv.fail_to_remove'),
+                $replacement
+            );
+        }
     }
 }

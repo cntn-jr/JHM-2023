@@ -18450,6 +18450,25 @@
         }
          
     }
+            /**
+     * 
+     *
+     */ 
+        class MailSender {
+                    /**
+         * メッセージを指定し、送信する
+         *
+         * @param integer $messageMasterId
+         * @return void 
+         * @static 
+         */ 
+        public static function sendNotification($messageMasterId, $replacement)
+        {
+                        /** @var \App\Utils\MailSender $instance */
+                        $instance->sendNotification($messageMasterId, $replacement);
+        }
+         
+    }
      
 }
 
@@ -22941,6 +22960,7 @@ namespace  {
             class View extends \Illuminate\Support\Facades\View {}
             class Vite extends \Illuminate\Support\Facades\Vite {}
             class CsvHandler extends \App\Facades\CsvHandler {}
+            class MailSender extends \App\Facades\MailSender {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
      
 }

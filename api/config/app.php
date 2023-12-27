@@ -186,6 +186,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'CsvHandler' => App\Facades\CsvHandler::class,
+        'MailSender' => App\Facades\MailSender::class,
     ])->toArray(),
 
 ];
