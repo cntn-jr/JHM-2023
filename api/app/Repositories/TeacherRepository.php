@@ -82,15 +82,9 @@ class TeacherRepository {
      * @param array $teacherColumns
      * @return boolean
      */
-    public function updateAccount(Teacher $teacher, array $teacherColumns): bool
+    public function updateAccount(Teacher $teacher): bool
     {
         // 教師情報を更新する
-        $teacher->first_name      = $teacherColumns['first_name'];
-        $teacher->last_name       = $teacherColumns['last_name'];
-        $teacher->first_name_kana = $teacherColumns['first_name_kana'];
-        $teacher->last_name_kana  = $teacherColumns['last_name_kana'];
-        $teacher->email           = $teacherColumns['email'];
-        $teacher->password        = $teacherColumns['password'];
         return $teacher->save();
     }
 

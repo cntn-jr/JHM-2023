@@ -12,7 +12,7 @@ use App\Repositories\TeacherRepository;
 use App\Rules\UniqueInArray;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Lang;
+use Illuminate\Support\Facades\Lang;
 
 class TeacherService {
 
@@ -117,7 +117,13 @@ class TeacherService {
         if ($this->isManagedTeacher($teacher)) {
 
             // 教師情報を更新する
-            $result = $this->teacherRepository->updateAccount($teacher, $columns);
+            $teacher->first_name      = $columns['first_name'];
+            $teacher->last_name       = $columns['last_name'];
+            $teacher->first_name_kana = $columns['first_name_kana'];
+            $teacher->last_name_kana  = $columns['last_name_kana'];
+            $teacher->email           = $columns['email'];
+            $teacher->password        = $columns['password'];
+            $result = $this->teacherRepository->updateAccount($teacher);
             return [
                 'result' => $result,
             ];
@@ -158,7 +164,7 @@ class TeacherService {
     }
 
     /**
-     * CSVファイルから取得したデータをバリデーションし返す
+     * CSVファイルから取得したデータをバリデーションを通して返す
      *
      * @param UploadTeacherCsvRequest $request
      * @return array
