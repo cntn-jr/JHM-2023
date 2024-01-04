@@ -18433,20 +18433,22 @@
          * @return array 
          * @static 
          */ 
-        public static function getContents($filePath, $header)
+        public static function getContents($filePath, $header, $validator = null)
         {
                         /** @var \App\Utils\CsvHandler $instance */
-                        return $instance->getContents($filePath, $header);
+                        return $instance->getContents($filePath, $header, $validator);
         }
                     /**
-         * 
+         * ファイルを削除する
          *
+         * @param string $filePath
+         * @return void 
          * @static 
          */ 
-        public static function remove($filePath)
+        public static function remove($filepath)
         {
                         /** @var \App\Utils\CsvHandler $instance */
-                        return $instance->remove($filePath);
+                        $instance->remove($filepath);
         }
          
     }
@@ -18459,6 +18461,7 @@
          * メッセージを指定し、送信する
          *
          * @param integer $messageMasterId
+         * @param array $replacement
          * @return void 
          * @static 
          */ 

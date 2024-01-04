@@ -51,17 +51,36 @@ class CsvHandler {
         // ファイル内容を取得
         $contents = Storage::disk('local')->get($filePath);
 
+        if (!$contents) {
+            return '';
+        }
+
         // 改行コードを統一
         $contents = str_replace(array("\r\n","\r"), "\n", $contents);
 
         // 行単位の配列作成
         $contents = explode("\n", $contents);
+
+        // 1行目を無視する
         array_shift($contents);
 
         // 各行の値にキーを設定する
         $formattedContents = array();
         foreach ($contents as $row) {
-            $formattedContents[] = array_combine($header, explode(',', $row));
+
+            // 空行や空白のみの行を無視する
+            if (!$row || preg_match('/^\s+$/', $row)) {
+                continue;
+            }
+
+            // 必要カラム数が足りない場合、補完する
+            $columns = explode(',', $row);
+            $columns = array_pad($columns, count($header), '');
+
+            // キーを設定
+            $columns = array_combine($header, $columns);
+
+            $formattedContents[] = $columns;
         }
         return $formattedContents;
     }

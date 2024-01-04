@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Facades\CsvHandler;
 use App\Http\Requests\manager\CreateTeacherRequest;
+use App\Http\Requests\manager\CreateTeachersRequest;
 use App\Http\Requests\manager\DestroyTeacherRequest;
 use App\Http\Requests\manager\UpdateTeacherRequest;
 use App\Http\Requests\manager\UploadTeacherCsvRequest;
 use App\Models\Teacher;
 use App\Repositories\TeacherRepository;
 use App\Rules\UniqueInArray;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Lang;
@@ -195,6 +197,14 @@ class TeacherService {
         // ファイル内容を取得する
         $contents = CsvHandler::getContents($filePath, self::CSV_HEADER);
 
+        if (!$contents) {
+            return [
+                'result'  => false,
+                'message' => 'Failed to get contents of the CSV file.',
+                'data'    => '',
+            ];
+        }
+
         // バリデーションを実行
         $validatedContents = $this->validateTeachers($contents);
 
@@ -205,6 +215,47 @@ class TeacherService {
             'result'  => true,
             'message' => '',
             'data'    => $validatedContents,
+        ];
+    }
+
+    public function createAccounts(CreateTeachersRequest $request)
+    {
+        $teacherAry = $request->teachers;
+
+        // バリデーションを実行
+        $teacherAry = $this->validateTeachers($teacherAry);
+
+        // ログインしている管理者を取得
+        $loginManager = Auth::user();
+
+        // 教師データ作成
+        $createdTeacherAry = array();
+        foreach ($teacherAry as $teacherData) {
+            try {
+                if (empty($teacherData['errors'])) {
+                    $columns = $teacherData['data'];
+                    $columns['school_id'] = $loginManager->school_id;
+                    $teacher = $this->teacherRepository->createAccount($columns);
+
+                    if (!$teacherData) {
+                        $teacherData['isCreated'] = false;
+                    }
+
+                    $teacherData['isCreated'] = true;
+                    $teacherData['createdData'] = $teacher;
+                } else {
+                    $teacherData['isCreated'] = false;
+                }
+            } catch (Exception $e) {
+                $teacherData['isCreated'] = false;
+            }
+            $createdTeacherAry[] = $teacherData;
+        }
+
+        return [
+            'result'  => true,
+            'message' => '',
+            'data'    => $createdTeacherAry,
         ];
     }
 
