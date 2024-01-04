@@ -20,11 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Validator::extend('hiragana', function ($attribute, $value, $parameter, $validator) {
+        Validator::extend('hiragana', function ($attribute, $value, $parameter) {
             return preg_match('/^[あ-ん]+$/u', $value);
         });
 
-        Validator::extend('password', function ($attribute, $value, $parameter, $validator) {
+        Validator::extend('password', function ($attribute, $value, $parameter) {
 
             // アルファベットの大文字、小文字、数字が必ず１つ含まれているかつ文字数は8~32
             return preg_match('/[a-z]/u', $value)
@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // 教師IDの存在確認
-        Validator::extend('isTeacher', function ($attribute, $value, $parameter, $validator) {
+        Validator::extend('is_teacher', function ($attribute, $value, $parameter) {
             return Teacher::query()->where('id', $value)->exists();
         });
     }

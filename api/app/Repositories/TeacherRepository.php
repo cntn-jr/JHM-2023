@@ -6,7 +6,6 @@ use App\Models\Teacher;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Log;
 
 class TeacherRepository {
 
@@ -83,15 +82,9 @@ class TeacherRepository {
      * @param array $teacherColumns
      * @return boolean
      */
-    public function updateAccount(Teacher $teacher, array $teacherColumns): bool
+    public function updateAccount(Teacher $teacher): bool
     {
         // 教師情報を更新する
-        $teacher->first_name      = $teacherColumns['first_name'];
-        $teacher->last_name       = $teacherColumns['last_name'];
-        $teacher->first_name_kana = $teacherColumns['first_name_kana'];
-        $teacher->last_name_kana  = $teacherColumns['last_name_kana'];
-        $teacher->email           = $teacherColumns['email'];
-        $teacher->password        = $teacherColumns['password'];
         return $teacher->save();
     }
 
@@ -99,7 +92,7 @@ class TeacherRepository {
      * 教師アカウントを論理削除する
      *
      * @param Teacher $teacher
-     * @return void
+     * @return boolean
      */
     public function deleteAccount(Teacher $teacher): bool | null
     {

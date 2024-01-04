@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Throwable;
@@ -68,6 +69,14 @@ class Handler extends ExceptionHandler
                     ],
                     Lang::get('messages.exceptions.404'),
                     Response::HTTP_NOT_FOUND
+                );
+            } else if ($e instanceof HttpException) {
+                return response()->ApiError(
+                    [
+                        'error' => $e->getMessage(),
+                    ],
+                    $e->getMessage(),
+                    $e->getStatusCode()
                 );
             }
 

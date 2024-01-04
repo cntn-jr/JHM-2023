@@ -2,20 +2,18 @@
 
 namespace App\Http\Requests;
 
-use App\Const\Role;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
 
-class DestroyTeacherRequest extends FormRequest
+class BaseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -26,7 +24,7 @@ class DestroyTeacherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'teacher_id' => 'isTeacher',
+            //
         ];
     }
 
@@ -45,28 +43,5 @@ class DestroyTeacherRequest extends FormRequest
         );
 
         throw new HttpResponseException($response);
-    }
-
-    /**
-     * 項目名
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return [
-            'teacher_id' => '教師ID',
-        ];
-    }
-
-    /**
-     * エラーメッセージ
-     *
-     * @return array
-     */
-    public function messages() {
-        return [
-            'teacher_id.is_teacher' => '存在しない教師IDが指定されています。',
-        ];
     }
 }

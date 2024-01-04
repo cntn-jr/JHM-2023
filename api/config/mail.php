@@ -122,4 +122,11 @@ return [
         ],
     ],
 
+    // message_master_id
+    'message_master' => [
+        'csv' => [
+            'fail_to_remove' => 101,
+        ],
+    ],
+
 ];
